@@ -1,6 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
 import { Suspense } from "react";
-import AuthLayout from "../../../components/auth/auth-layout";
+import AuthLayout from "../../../../components/layout/auth-layout";
 
 export default function LoginPage() {
   return (
@@ -8,7 +8,7 @@ export default function LoginPage() {
       formLabel="Нэвтрэх"
     >
       <Suspense fallback={null}>
-        <SignIn path="/login" routing="path" signUpUrl="/sign-up" />
+        <SignIn path="/login" routing="path" signUpUrl="/signup" />
       </Suspense>
     </AuthLayout>
   );

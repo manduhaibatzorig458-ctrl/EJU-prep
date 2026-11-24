@@ -19,7 +19,7 @@ export default function LandingHero() {
       </p>
 
       <div className="eju-hero-actions">
-        <Link className="eju-primary-action" href="/sign-up">
+        <Link className="eju-primary-action" href="/signup">
           Үнэгүй бүртгүүлэх
         </Link>
         <Link className="eju-secondary-action" href="/login">

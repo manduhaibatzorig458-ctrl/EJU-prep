@@ -7,7 +7,7 @@
   --japanese-paper: #fbfaf7;
   --japanese-paper-panel: #f2f0ea;
   --japanese-red: #c84b3e;
-  --auth-blue: #426ca7;
+  --brand-blue: #426ca7;
 }
 
 @theme inline {
@@ -102,7 +102,7 @@ a {
 }
 
 .auth-title-accent {
-  color: var(--auth-blue);
+  color: var(--brand-blue);
 }
 
 .auth-illustration {
@@ -116,12 +116,20 @@ a {
   margin-bottom: clamp(12px, 2vh, 20px);
 }
 
+.auth-illustration-login {
+  margin-top: calc(var(--auth-copy-offset) - 4px);
+}
+
 .auth-illustration img {
   display: block;
   width: 100%;
   height: auto;
   max-height: min(32svh, 260px);
   object-fit: contain;
+}
+
+.auth-illustration-login img {
+  max-height: min(40svh, 340px);
 }
 
 .auth-story-footer {
@@ -194,6 +202,60 @@ a {
 
 .eju-header-inner.auth-header-inner {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+@media (min-width: 1101px) {
+  .eju-header-inner.home-header-inner {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .home-header-inner > .eju-nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.auth-header-inner > .eju-brand {
+  grid-column: 1;
+}
+
+.auth-header-inner > .eju-nav-links {
+  grid-column: 2;
+}
+
+.auth-account-button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  grid-column: 3;
+  place-items: center;
+  justify-self: end;
+  border: 1px solid #dfe3e8;
+  border-radius: 50%;
+  color: #293444;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.auth-account-button:hover {
+  border-color: var(--brand-blue);
+  background: #f2f0ea;
+}
+
+.auth-account-button:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 3px;
+}
+
+.auth-account-button svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
 }
 
 .eju-brand {
@@ -303,14 +365,14 @@ a {
 }
 
 .eju-signup-button {
-  border-color: #b4d9f2;
-  background: #b8dcf3;
-  color: #172c3c;
+  border-color: var(--brand-blue);
+  background: var(--brand-blue);
+  color: #fff;
   font-weight: 600;
 }
 
 .eju-signup-button:hover {
-  background: #a5d0ed;
+  background: #355b90;
 }
 
 .landing-layout {
@@ -395,14 +457,14 @@ a {
 }
 
 .eju-primary-action {
-  border-color: #b8dcf3;
-  background: #b8dcf3;
-  color: #172c3c;
+  border-color: var(--brand-blue);
+  background: var(--brand-blue);
+  color: #fff;
 }
 
 .eju-primary-action:hover {
   transform: translateY(-1px);
-  background: #a5d0ed;
+  background: #355b90;
 }
 
 .eju-secondary-action {
@@ -473,7 +535,7 @@ a {
   place-items: center;
   border-radius: 50%;
   background: #edf5fb;
-  color: #416887;
+  color: var(--brand-blue);
 }
 
 .study-target-icon svg {

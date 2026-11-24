@@ -1,7 +1,7 @@
-import LandingHeader from "../components/landing/landing-header";
-import LandingHero from "../components/landing/landing-hero";
-import LearningHighlights from "../components/landing/learning-highlights";
-import StudyPanel from "../components/landing/study-panel";
+import LandingHeader from "../../components/layout/landing-header";
+import LandingHero from "../../components/layout/landing-hero";
+import LearningHighlights from "../../components/layout/learning-highlights";
+import StudyPanel from "../../components/layout/study-panel";
 
 export default function Home() {
   return (
