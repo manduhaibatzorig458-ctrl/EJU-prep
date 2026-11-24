@@ -129,7 +129,7 @@ a {
 }
 
 .auth-illustration-login img {
-  max-height: min(40svh, 340px);
+  max-height: min(45svh, 380px);
 }
 
 .auth-story-footer {
@@ -155,7 +155,49 @@ a {
 
 @media (min-width: 821px) {
   .auth-page {
-    --auth-center-shift: clamp(12px, 2.8vw, 40px);
+    --auth-center-shift: clamp(20px, 3.6vw, 52px);
+  }
+
+  .auth-page-login {
+    height: calc(100svh - var(--auth-header-height));
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .auth-page-login .auth-story-panel,
+  .auth-page-login .auth-form-panel {
+    min-height: 0;
+  }
+
+  .auth-page-login .auth-story-panel {
+    padding-block: clamp(16px, 3.5svh, 36px);
+  }
+
+  .auth-page-login .auth-story-inner {
+    justify-content: center;
+  }
+
+  .auth-page-login .auth-story-copy {
+    padding-block: 0;
+    transform: none;
+  }
+
+  .auth-page-login .auth-illustration-login {
+    margin-top: clamp(10px, 2.4svh, 20px);
+    margin-bottom: clamp(8px, 1.2svh, 12px);
+  }
+
+  .auth-page-login .auth-illustration-login img {
+    max-height: min(44svh, 360px);
+  }
+
+  .auth-page-login .auth-form-panel {
+    padding-block: clamp(16px, 3.5svh, 32px);
+  }
+
+  .auth-page-login .auth-form-content .cl-card {
+    min-height: min(520px, calc(100svh - 180px));
   }
 
   .auth-story-inner {
@@ -164,6 +206,12 @@ a {
 
   .auth-form-content {
     transform: translateX(calc(0px - var(--auth-center-shift)));
+  }
+}
+
+@media (min-width: 821px) and (max-height: 620px) {
+  .auth-page-login .auth-illustration-login img {
+    max-height: min(34svh, 240px);
   }
 }
 

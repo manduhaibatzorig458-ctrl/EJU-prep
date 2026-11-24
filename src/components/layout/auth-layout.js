@@ -38,7 +38,7 @@ export default function AuthLayout({ children, formLabel }) {
         </nav>
       </header>
 
-      <main className="auth-page">
+      <main className={isLoginPage ? "auth-page auth-page-login" : "auth-page"}>
         <section className="auth-story-panel" aria-labelledby="auth-story-title">
           <div className="auth-story-inner">
             <div className="auth-story-copy eju-hero">
@@ -68,12 +68,12 @@ export default function AuthLayout({ children, formLabel }) {
               <Image
                 src={
                   isLoginPage
-                    ? "/images/illustrations/eju-graduation-team-paper.png"
+                    ? "/images/illustrations/eju-login-graduates.png"
                     : "/images/illustrations/eju-study-team-bg.png"
                 }
                 alt=""
-                width={isLoginPage ? 780 : 1010}
-                height={isLoginPage ? 622 : 470}
+                width={isLoginPage ? 720 : 1010}
+                height={isLoginPage ? 525 : 470}
               />
             </div>
 
