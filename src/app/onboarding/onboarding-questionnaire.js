@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FlaskConical, LibraryBig, Target } from "lucide-react";
 import ExamScheduleSelection from "./exam-schedule-selection";
 import EjuSubjectSelection from "./eju-subject-selection";
+import OnboardingCompletionSummary from "./onboarding-completion-summary";
 import OnboardingStepper from "./onboarding-stepper";
 
 const questions = [
@@ -277,34 +278,29 @@ export default function OnboardingQuestionnaire() {
 
   return (
     <section
-      className="mx-auto flex min-h-svh w-[min(calc(100%_-_48px),760px)] flex-col justify-center py-8 max-[560px]:w-[calc(100%_-_40px)] sm:py-14"
+      className="mx-auto flex min-h-svh w-[min(calc(100%_-_48px),760px)] flex-col justify-start pt-8 pb-8 max-[560px]:w-[calc(100%_-_40px)] sm:pt-12 sm:pb-14"
       aria-live="polite"
     >
+      {!isComplete && (
+        <header className="mb-6 text-center">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6d7888]">
+            Эхлэхээс өмнө
+          </p>
+          <h1 className="mx-auto my-0 whitespace-nowrap text-[clamp(22px,3vw,30px)] font-[680] leading-tight tracking-[-0.04em] text-[#171b2b] max-[560px]:whitespace-normal">
+          Шалгалтад бэлдэх чиглэлээ тодорхойлцгооё.
+          </h1>
+        </header>
+      )}
       <div className="rounded-2xl border border-[#e4e7eb] bg-white p-5 sm:p-7">
-        <OnboardingStepper completedSteps={completedSteps} totalSteps={activeQuestions.length} />
-        <p className="mb-5 text-xs leading-5 text-[#6d7888]">
-          Шалгалтад бэлтгэх чиглэлээ шийдэх
-        </p>
+        {!isComplete && (
+          <OnboardingStepper completedSteps={completedSteps} totalSteps={activeQuestions.length} />
+        )}
 
         {isComplete ? (
-          <div>
-            <h2 className="m-0 text-2xl font-[760] tracking-[-0.05em] sm:text-3xl">
-              Тохиргоо дууслаа.
-            </h2>
-            <p className="mb-0 mt-3 text-sm leading-6 text-[#687383]">
-              Хариултуудаа буцаж шалгаж, хүсвэл өөрчилж болно.
-            </p>
-            <button
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full border border-[#dfe3e8] px-5 text-sm font-semibold text-[#293444] transition hover:border-[var(--brand-blue)] hover:bg-[#f2f0ea] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-blue)]"
-              onClick={reviewAnswers}
-              type="button"
-            >
-              Хариултаа шалгах
-            </button>
-          </div>
+          <OnboardingCompletionSummary answers={answers} onReviewAnswers={reviewAnswers} />
         ) : (
           <>
-          <h2 className="mb-7 mt-0 text-2xl font-[760] tracking-[-0.05em] sm:text-3xl">
+          <h2 className="mb-7 mt-0 text-[clamp(26px,3.5vw,34px)] font-[650] tracking-[-0.04em]">
             {currentQuestion.title}
           </h2>
 
