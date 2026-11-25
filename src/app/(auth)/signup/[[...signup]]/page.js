@@ -8,7 +8,12 @@ export default function SignUpPage() {
       formLabel="Бүртгэл үүсгэх"
     >
       <Suspense fallback={null}>
-        <SignUp path="/signup" routing="path" signInUrl="/login" />
+        <SignUp
+          path="/signup"
+          routing="path"
+          signInUrl="/login"
+          forceRedirectUrl="/onboarding"
+        />
       </Suspense>
     </AuthLayout>
   );
