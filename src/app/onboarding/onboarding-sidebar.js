@@ -1,77 +1,72 @@
+"use client";
+
+import { useState } from "react";
 import EjuBrand from "../../components/layout/eju-brand";
+import {
+  Award,
+  BookOpen,
+  BookX,
+  ClipboardCheck,
+  FileQuestion,
+  House,
+  LayoutDashboard,
+  RefreshCw,
+  University,
+  UserRound,
+} from "lucide-react";
 
 const navigationGroups = [
-  {
-    title: "МИНИЙ СУРАЛЦАЛТ",
-    items: [
-      "Миний бэлтгэл",
-      "Туршилтын шалгалт",
-      "Сорил",
-      "Давтлагын хуваарь",
-      "Алдааны дэвтэр",
-      "Суралцах ахиц",
-    ],
-  },
-  {
-    title: "ИХ СУРГУУЛИЙН МЭДЭЭЛЭЛ",
-    items: [
-      "Их сургуулиуд",
-      "Мэргэжил, хөтөлбөрүүд",
-      "Элсэлтийн шаардлага",
-      "Их сургуулиудын харьцуулалт",
-      "Хадгалсан сургуулиуд",
-    ],
-  },
-  {
-    title: "ТЭТГЭЛГИЙН МЭДЭЭЛЭЛ",
-    items: [
-      "Бүх тэтгэлэг",
-      "MEXT тэтгэлэг",
-      "Их сургуулийн тэтгэлэг",
-      "Бүрэн тэтгэлэг",
-      "Тэтгэлгийн шаардлага",
-      "Хадгалсан тэтгэлгүүд",
-    ],
-  },
-  {
-    title: "МИНИЙ ЭЛСЭЛТ",
-    items: ["Миний өргөдөл", "Бичиг баримтууд", "Хугацааны хуанли"],
-  },
-  {
-    title: "БУСАД",
-    items: ["Хиймэл оюуны туслах", "Миний профайл", "Тохиргоо"],
-  },
+  [
+    { label: "Нүүр хуудас", Icon: House },
+    { label: "Dashboard", Icon: LayoutDashboard },
+    { label: "EJU бэлтгэл", Icon: BookOpen },
+    { label: "Mock Exam", Icon: ClipboardCheck },
+    { label: "Wrong Answer Book", Icon: BookX },
+    { label: "Spaced Repetition", Icon: RefreshCw },
+    { label: "Quiz", Icon: FileQuestion },
+  ],
+  [
+    { label: "Их сургуулиуд", Icon: University },
+    { label: "Тэтгэлэг", Icon: Award },
+  ],
+  [{ label: "Миний профайл", Icon: UserRound }],
 ];
 
 function SidebarContent() {
+  const [activeItem, setActiveItem] = useState("EJU бэлтгэл");
+
   return (
     <div className="px-4 pb-6 pt-5">
       <div className="mb-8 border-b border-[#e9e6de] px-2 pb-5">
         <EjuBrand />
       </div>
 
-      <nav aria-label="Үндсэн цэс" className="space-y-7">
-        {navigationGroups.map((group) => (
-          <section key={group.title}>
-            <h2 className="mb-2 px-2 text-[10px] font-bold tracking-[0.12em] text-[#87909a]">
-              {group.title}
-            </h2>
+      <nav aria-label="Үндсэн цэс" className="space-y-5">
+        {navigationGroups.map((items, groupIndex) => (
+          <section
+            className={groupIndex > 0 ? "border-t border-[#e9e6de] pt-4" : ""}
+            key={items[0].label}
+          >
             <ul className="m-0 list-none space-y-1 p-0">
-              {group.items.map((item) => {
-                const isCurrentPage = item === "Миний бэлтгэл";
+              {items.map((item) => {
+                const Icon = item.Icon;
+                const isActive = activeItem === item.label;
 
                 return (
-                  <li key={item}>
-                    <span
-                      aria-current={isCurrentPage ? "page" : undefined}
-                      className={`flex min-h-9 items-center rounded-lg px-2.5 text-[13px] transition-colors ${
-                        isCurrentPage
+                  <li key={item.label}>
+                    <button
+                      aria-pressed={isActive}
+                      className={`flex min-h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] transition-colors ${
+                        isActive
                           ? "bg-[#e9eef6] font-semibold text-[#355b90]"
-                          : "text-[#4f5b69]"
+                          : "text-[#4f5b69] hover:bg-[#f2f0ea]"
                       }`}
+                      onClick={() => setActiveItem(item.label)}
+                      type="button"
                     >
-                      {item}
-                    </span>
+                      <Icon className="size-4 shrink-0" aria-hidden="true" />
+                      <span>{item.label}</span>
+                    </button>
                   </li>
                 );
               })}

@@ -115,7 +115,10 @@ export default function OnboardingQuestionnaire() {
     examDay: "",
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isLoadingSavedAnswers, setIsLoadingSavedAnswers] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
+  const [saveStatus, setSaveStatus] = useState("idle");
+  const [saveError, setSaveError] = useState("");
   const subjectQuestion = answers.ejuTrack
     ? getSubjectQuestion(answers.ejuTrack)
     : {
@@ -139,6 +142,38 @@ export default function OnboardingQuestionnaire() {
   const completedSteps = isComplete
     ? activeQuestions.length
     : currentIndex;
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function loadSavedAnswers() {
+      try {
+        const response = await fetch("/api/onboarding", { cache: "no-store" });
+        if (!response.ok) {
+          return;
+        }
+
+        const result = await response.json();
+        if (result.answers && !isCancelled) {
+          setAnswers({ ...initialSubjectAnswers, ...result.answers });
+          setIsComplete(true);
+          setSaveStatus("saved");
+        }
+      } catch {
+        // If saved answers cannot be loaded, let the learner start the questionnaire again.
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingSavedAnswers(false);
+        }
+      }
+    }
+
+    void loadSavedAnswers();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   useEffect(() => {
     document
       .getElementById("onboarding-scroll-container")
@@ -154,17 +189,44 @@ export default function OnboardingQuestionnaire() {
     }, 180);
   }
 
-  function selectAnswer(answer) {
-    setAnswers((currentAnswers) => {
-      const nextAnswers = { ...currentAnswers, [currentQuestion.id]: answer };
-      if (currentQuestion.id === "ejuTrack" && currentAnswers.ejuTrack !== answer) {
-        return { ...nextAnswers, ...initialSubjectAnswers };
+  async function saveOnboardingAnswers(onboardingAnswers) {
+    setSaveStatus("saving");
+    setSaveError("");
+
+    try {
+      const response = await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(onboardingAnswers),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(result?.error || "Тохиргоог хадгалж чадсангүй. Дахин оролдоно уу.");
       }
-      return nextAnswers;
-    });
+
+      setSaveStatus("saved");
+    } catch (error) {
+      setSaveStatus("error");
+      setSaveError(
+        error instanceof TypeError
+          ? "Сервертэй холбогдож чадсангүй. Интернэт холболтоо шалгаад дахин оролдоно уу."
+          : error instanceof Error
+            ? error.message
+            : "Тохиргоог хадгалж чадсангүй. Дахин оролдоно уу.",
+      );
+    }
+  }
+
+  function selectAnswer(answer) {
+    let nextAnswers = { ...answers, [currentQuestion.id]: answer };
+    if (currentQuestion.id === "ejuTrack" && answers.ejuTrack !== answer) {
+      nextAnswers = { ...nextAnswers, ...initialSubjectAnswers };
+    }
+    setAnswers(nextAnswers);
 
     if (currentIndex === activeQuestions.length - 1) {
       setIsComplete(true);
+      void saveOnboardingAnswers(nextAnswers);
       return;
     }
 
@@ -274,6 +336,8 @@ export default function OnboardingQuestionnaire() {
   function reviewAnswers() {
     setIsComplete(false);
     setCurrentIndex(0);
+    setSaveStatus("idle");
+    setSaveError("");
   }
 
   return (
@@ -281,7 +345,7 @@ export default function OnboardingQuestionnaire() {
       className="mx-auto flex min-h-svh w-[min(calc(100%_-_48px),760px)] flex-col justify-start pt-8 pb-8 max-[560px]:w-[calc(100%_-_40px)] sm:pt-12 sm:pb-14"
       aria-live="polite"
     >
-      {!isComplete && (
+      {!isComplete && !isLoadingSavedAnswers && (
         <header className="mb-6 text-center">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6d7888]">
             Эхлэхээс өмнө
@@ -291,13 +355,26 @@ export default function OnboardingQuestionnaire() {
           </h1>
         </header>
       )}
-      <div className="rounded-2xl border border-[#e4e7eb] bg-white p-5 sm:p-7">
-        {!isComplete && (
+      <div
+        aria-busy={isLoadingSavedAnswers}
+        className="rounded-2xl border border-[#e4e7eb] bg-white p-5 sm:p-7"
+      >
+        {!isComplete && !isLoadingSavedAnswers && (
           <OnboardingStepper completedSteps={completedSteps} totalSteps={activeQuestions.length} />
         )}
 
-        {isComplete ? (
-          <OnboardingCompletionSummary answers={answers} onReviewAnswers={reviewAnswers} />
+        {isLoadingSavedAnswers ? (
+          <p className="m-0 py-5 text-sm text-[#687383]" role="status">
+            Хадгалсан тохиргоог шалгаж байна…
+          </p>
+        ) : isComplete ? (
+          <OnboardingCompletionSummary
+            answers={answers}
+            onReviewAnswers={reviewAnswers}
+            onRetrySave={() => saveOnboardingAnswers(answers)}
+            saveError={saveError}
+            saveStatus={saveStatus}
+          />
         ) : (
           <>
           <h2 className="mb-7 mt-0 text-[clamp(26px,3.5vw,34px)] font-[650] tracking-[-0.04em]">

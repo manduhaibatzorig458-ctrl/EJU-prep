@@ -51,7 +51,13 @@ function getExamDateSummary(answers) {
   return `${sessionLabel} · ${answers.examYear} оны ${month}-р сарын ${answers.examDay}`;
 }
 
-export default function OnboardingCompletionSummary({ answers, onReviewAnswers }) {
+export default function OnboardingCompletionSummary({
+  answers,
+  onReviewAnswers,
+  onRetrySave,
+  saveError,
+  saveStatus,
+}) {
   const summaryItems = [
     { label: "Сонгосон хичээлүүд", value: getSubjectsSummary(answers) },
     { label: "Шалгалтын огноо", value: getExamDateSummary(answers) },
@@ -85,8 +91,35 @@ export default function OnboardingCompletionSummary({ answers, onReviewAnswers }
         ))}
       </dl>
 
+      {saveStatus === "saving" && (
+        <p className="mb-0 mt-5 text-sm text-[#687383]" role="status">
+          Тохиргоог хадгалж байна…
+        </p>
+      )}
+      {saveStatus === "saved" && (
+        <p className="mb-0 mt-5 text-sm text-[#3b6d4a]" role="status">
+          Тохиргоо амжилттай хадгалагдлаа.
+        </p>
+      )}
+      {saveStatus === "error" && (
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <p className="mb-0 text-sm text-[#b33a32]" role="alert">
+            {saveError}
+          </p>
+          <button
+            className="inline-flex min-h-9 items-center justify-center rounded-full border border-[#dfe3e8] px-4 text-sm font-semibold text-[#293444] transition hover:border-[var(--brand-blue)] disabled:opacity-50"
+            disabled={saveStatus === "saving"}
+            onClick={onRetrySave}
+            type="button"
+          >
+            Дахин хадгалах
+          </button>
+        </div>
+      )}
+
       <button
-        className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full border border-[#dfe3e8] px-5 text-sm font-semibold text-[#293444] transition hover:border-[var(--brand-blue)] hover:bg-[#f2f0ea] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-blue)]"
+        className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full border border-[#dfe3e8] px-5 text-sm font-semibold text-[#293444] transition hover:border-[var(--brand-blue)] hover:bg-[#f2f0ea] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-blue)] disabled:opacity-50"
+        disabled={saveStatus === "saving"}
         onClick={onReviewAnswers}
         type="button"
       >

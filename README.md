@@ -1,5 +1,21 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Onboarding answer storage
+
+Onboarding answers are saved for the signed-in Clerk user in Supabase.
+
+1. Run `supabase/migrations/20261125130000_create_onboarding_responses.sql` in the Supabase SQL Editor.
+2. Add these server-only values to `.env.local`:
+
+   ```env
+   SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_SECRET_KEY=your-secret-key
+   ```
+
+3. Restart the Next.js development server.
+
+Keep `SUPABASE_SECRET_KEY` private and do not prefix it with `NEXT_PUBLIC_`. The API checks the signed-in Clerk user and uses that user ID as the row key; browser clients do not get direct table access.
+
 ## Getting Started
 
 First, run the development server:
