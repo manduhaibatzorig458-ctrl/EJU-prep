@@ -36,9 +36,11 @@ body:has(.landing-home) {
   background: var(--japanese-paper);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,43 +89,6 @@ a {
     left: 50%;
     transform: translateX(-50%);
   }
-}
-
-.eju-brand {
-  position: relative;
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 0;
-  color: #171b2b;
-  font-size: 29px;
-  font-weight: 750;
-  letter-spacing: -0.055em;
-}
-
-.eju-brand-word {
-  position: relative;
-  display: inline-block;
-}
-
-.eju-brand-accent {
-  position: absolute;
-  top: 2px;
-  right: -12px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--japanese-red);
-}
-
-.eju-brand-plane {
-  display: block;
-  width: 34px;
-  height: 34px;
-  flex: 0 0 auto;
-  margin-right: 6px;
-  fill: #000;
-  stroke: none;
 }
 
 .eju-nav-links,
@@ -528,10 +493,6 @@ a {
     gap: 16px;
   }
 
-  .eju-brand {
-    font-size: 25px;
-  }
-
   .eju-nav-links {
     gap: 20px;
     font-size: 13px;
@@ -673,23 +634,6 @@ a {
   .eju-header-inner {
     width: calc(100% - 40px);
     min-height: 72px;
-  }
-
-  .eju-brand {
-    gap: 0;
-    font-size: 24px;
-  }
-
-  .eju-brand-plane {
-    width: 28px;
-    height: 28px;
-  }
-
-  .eju-brand-accent {
-    top: 1px;
-    right: -10px;
-    width: 7px;
-    height: 7px;
   }
 
   .eju-header-actions {

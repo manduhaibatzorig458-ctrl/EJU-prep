@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Plane, UserRound } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 import Button from "../ui/button";
+import EjuBrand from "./eju-brand";
 
 const desktopAuthStoryShiftClass =
   "min-[821px]:translate-x-[clamp(20px,3.6vw,52px)]";
@@ -28,8 +29,6 @@ export default function AuthLayout({ children, formLabel }) {
   const accountLinkHref = isLoginPage ? "/signup" : "/login";
   const authHeaderClasses =
     "mx-auto grid w-[min(calc(100%_-_128px),1280px)] min-h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-7 max-[1100px]:gap-4 max-[1000px]:w-[calc(100%_-_96px)] max-[560px]:min-h-[72px] max-[560px]:w-[calc(100%_-_40px)]";
-  const authBrandClasses =
-    "relative col-start-1 inline-flex w-fit items-center text-[#171b2b] text-[29px] font-[750] tracking-[-0.055em] max-[1100px]:text-[25px] max-[560px]:text-2xl";
   const authNavigationClasses =
     "col-start-2 flex items-center justify-center gap-[clamp(20px,3vw,52px)] text-[15px] text-[#606a78] max-[1100px]:gap-5 max-[1100px]:text-[13px] max-[1000px]:hidden";
   const authPageClasses =
@@ -55,24 +54,7 @@ export default function AuthLayout({ children, formLabel }) {
     <>
       <header className="border-b border-[#e9e6de] bg-[var(--japanese-paper)]">
         <nav className={authHeaderClasses} aria-label="Үндсэн цэс">
-          <Link
-            className={authBrandClasses}
-            href="/"
-            aria-label="EJU нүүр хуудас"
-          >
-            <Plane
-              className="mr-1.5 size-[34px] flex-[0_0_auto] max-[560px]:size-7"
-              aria-hidden="true"
-              strokeWidth={1.8}
-            />
-            <span className="relative inline-block">
-              EJU
-              <span
-                className="absolute right-3 top-0.5 size-2 rounded-full bg-[var(--japanese-red)] max-[560px]:-right-[10px] max-[560px]:top-px max-[560px]:size-[7px]"
-                aria-hidden="true"
-              />
-            </span>
-          </Link>
+          <EjuBrand tone="black" />
           <div className={authNavigationClasses}>
             <Link className={navigationLinkClasses} href="/#home">Нүүр</Link>
             <Link className={navigationLinkClasses} href="/#subjects">
@@ -90,13 +72,14 @@ export default function AuthLayout({ children, formLabel }) {
           </div>
           <Button
             href={accountLinkHref}
+            variant="account"
             aria-label="Хэрэглэгчийн бүртгэл"
             className="col-start-3 justify-self-end"
           >
-            <UserRound
-              className="size-[21px]"
+            <CircleUserRound
+              className="size-6"
               aria-hidden="true"
-              strokeWidth={1.7}
+              strokeWidth={1.8}
             />
           </Button>
         </nav>

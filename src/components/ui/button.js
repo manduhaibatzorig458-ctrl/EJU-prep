@@ -4,6 +4,9 @@ const buttonBaseClasses =
   "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-blue)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
 const buttonVariantClasses = {
+  account:
+    "border border-black bg-white text-black hover:bg-[#f2f0ea]",
+  default: "bg-[var(--brand-blue)] text-white hover:bg-[#355b90]",
   outline:
     "border border-[#dfe3e8] text-[#293444] hover:border-[var(--brand-blue)] hover:bg-[#f2f0ea]",
 };
