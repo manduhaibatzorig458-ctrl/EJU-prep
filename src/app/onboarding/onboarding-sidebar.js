@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import EjuBrand from "../../components/layout/eju-brand";
 import {
   Award,
@@ -17,9 +19,9 @@ import {
 
 const navigationGroups = [
   [
-    { label: "Нүүр хуудас", Icon: House },
+    { label: "Нүүр хуудас", Icon: House, href: "/" },
     { label: "Dashboard", Icon: LayoutDashboard },
-    { label: "EJU бэлтгэл", Icon: BookOpen },
+    { label: "EJU бэлтгэл", Icon: BookOpen, href: "/onboarding" },
     { label: "Mock Exam", Icon: ClipboardCheck },
     { label: "Wrong Answer Book", Icon: BookX },
     { label: "Spaced Repetition", Icon: RefreshCw },
@@ -29,11 +31,18 @@ const navigationGroups = [
     { label: "Их сургуулиуд", Icon: University },
     { label: "Тэтгэлэг", Icon: Award },
   ],
-  [{ label: "Миний профайл", Icon: UserRound }],
+  [{ label: "Миний профайл", Icon: UserRound, href: "/profile" }],
 ];
 
 function SidebarContent() {
-  const [activeItem, setActiveItem] = useState("EJU бэлтгэл");
+  const pathname = usePathname();
+  const [selectedItem, setSelectedItem] = useState("EJU бэлтгэл");
+  const activeItem =
+    pathname === "/profile"
+      ? "Миний профайл"
+      : pathname === "/onboarding"
+        ? "EJU бэлтгэл"
+        : selectedItem;
 
   return (
     <div className="px-4 pb-6 pt-5">
@@ -51,22 +60,34 @@ function SidebarContent() {
               {items.map((item) => {
                 const Icon = item.Icon;
                 const isActive = activeItem === item.label;
+                const itemClassName = `flex min-h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] transition-colors ${
+                  isActive
+                    ? "bg-[#e9eef6] font-semibold text-[#355b90]"
+                    : "text-[#4f5b69] hover:bg-[#f2f0ea]"
+                }`;
 
                 return (
                   <li key={item.label}>
-                    <button
-                      aria-pressed={isActive}
-                      className={`flex min-h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] transition-colors ${
-                        isActive
-                          ? "bg-[#e9eef6] font-semibold text-[#355b90]"
-                          : "text-[#4f5b69] hover:bg-[#f2f0ea]"
-                      }`}
-                      onClick={() => setActiveItem(item.label)}
-                      type="button"
-                    >
-                      <Icon className="size-4 shrink-0" aria-hidden="true" />
-                      <span>{item.label}</span>
-                    </button>
+                    {item.href ? (
+                      <Link
+                        aria-current={isActive ? "page" : undefined}
+                        className={itemClassName}
+                        href={item.href}
+                      >
+                        <Icon className="size-4 shrink-0" aria-hidden="true" />
+                        <span>{item.label}</span>
+                      </Link>
+                    ) : (
+                      <button
+                        aria-pressed={isActive}
+                        className={itemClassName}
+                        onClick={() => setSelectedItem(item.label)}
+                        type="button"
+                      >
+                        <Icon className="size-4 shrink-0" aria-hidden="true" />
+                        <span>{item.label}</span>
+                      </button>
+                    )}
                   </li>
                 );
               })}
