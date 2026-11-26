@@ -22,7 +22,7 @@ const navigationGroups = [
     { label: "Нүүр хуудас", Icon: House, href: "/" },
     { label: "Dashboard", Icon: LayoutDashboard },
     { label: "EJU бэлтгэл", Icon: BookOpen, href: "/onboarding" },
-    { label: "Mock Exam", Icon: ClipboardCheck },
+    { label: "Mock Exam", Icon: ClipboardCheck, href: "/mock-exam" },
     { label: "Wrong Answer Book", Icon: BookX },
     { label: "Spaced Repetition", Icon: RefreshCw },
     { label: "Quiz", Icon: FileQuestion },
@@ -36,13 +36,14 @@ const navigationGroups = [
 
 function SidebarContent() {
   const pathname = usePathname();
-  const [selectedItem, setSelectedItem] = useState("EJU бэлтгэл");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const routeActiveItem = navigationGroups
+    .flat()
+    .find((item) => item.href && (item.href === pathname || pathname.startsWith(`${item.href}/`)))?.label;
   const activeItem =
-    pathname === "/profile"
-      ? "Миний профайл"
-      : pathname === "/onboarding"
-        ? "EJU бэлтгэл"
-        : selectedItem;
+    selectedItem?.pathname === pathname
+      ? selectedItem.label
+      : routeActiveItem || "EJU бэлтгэл";
 
   return (
     <div className="px-4 pb-6 pt-5">
@@ -73,6 +74,7 @@ function SidebarContent() {
                         aria-current={isActive ? "page" : undefined}
                         className={itemClassName}
                         href={item.href}
+                        onClick={() => setSelectedItem(null)}
                       >
                         <Icon className="size-4 shrink-0" aria-hidden="true" />
                         <span>{item.label}</span>
@@ -81,7 +83,7 @@ function SidebarContent() {
                       <button
                         aria-pressed={isActive}
                         className={itemClassName}
-                        onClick={() => setSelectedItem(item.label)}
+                        onClick={() => setSelectedItem({ label: item.label, pathname })}
                         type="button"
                       >
                         <Icon className="size-4 shrink-0" aria-hidden="true" />
