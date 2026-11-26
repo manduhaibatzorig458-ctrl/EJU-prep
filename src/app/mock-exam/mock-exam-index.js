@@ -55,8 +55,11 @@ const mathCourses = [
   { id: "course1", label: "Course 1" },
 ];
 
-export default function MockExamIndex({ initialCourseId = "course2" }) {
-  const [activeSubjectId, setActiveSubjectId] = useState("mathematics");
+export default function MockExamIndex({
+  initialCourseId = "course2",
+  initialSubjectId = "mathematics",
+}) {
+  const [activeSubjectId, setActiveSubjectId] = useState(initialSubjectId);
   const [activeCourseId, setActiveCourseId] = useState(initialCourseId);
   const activeSubject = subjects.find((subject) => subject.id === activeSubjectId) || subjects[0];
   const activeCourse = mathCourses.find((course) => course.id === activeCourseId) || mathCourses[0];
@@ -123,8 +126,11 @@ export default function MockExamIndex({ initialCourseId = "course2" }) {
         </div>
       )}
 
-      {activeSubject.id === "mathematics" ? (
-        <MockExamYearIndex courseId={activeCourse.id} />
+      {activeSubject.id === "mathematics" ||
+      activeSubject.id === "physics" ||
+      activeSubject.id === "chemistry" ||
+      activeSubject.id === "biology" ? (
+        <MockExamYearIndex subjectId={activeSubject.id} courseId={activeCourse.id} />
       ) : (
         <MockExamEmptyIndex
           courseLabel={activeSubject.id === "mathematics" ? activeCourse.label : ""}

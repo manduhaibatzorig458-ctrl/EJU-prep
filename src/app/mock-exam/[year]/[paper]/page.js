@@ -3,14 +3,37 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ClipboardList } from "lucide-react";
 import OnboardingSidebar from "../../../onboarding/onboarding-sidebar";
-import { courseOneExamYears, courseTwoExamYears } from "../../mock-exam-year-data";
+import {
+  biologyExamYears,
+  courseOneExamYears,
+  courseTwoExamYears,
+  chemistryExamYears,
+  physicsExamYears,
+} from "../../mock-exam-year-data";
 
 async function MockExamPaperContent({ params, searchParams }) {
   const { year, paper: paperId } = await params;
-  const { course } = await searchParams;
+  const { course, subject } = await searchParams;
+  const subjectId = ["physics", "chemistry", "biology"].includes(subject)
+    ? subject
+    : "mathematics";
   const courseId = course === "course1" ? "course1" : "course2";
+  const subjectLabels = {
+    physics: "PHYSICS",
+    chemistry: "CHEMISTRY",
+    biology: "BIOLOGY",
+    mathematics: "MATHEMATICS",
+  };
+  const subjectLabel = subjectLabels[subjectId];
   const courseLabel = courseId === "course1" ? "Course 1" : "Course 2";
-  const examYears = courseId === "course1" ? courseOneExamYears : courseTwoExamYears;
+  const examYearsBySubject = {
+    physics: physicsExamYears,
+    chemistry: chemistryExamYears,
+    biology: biologyExamYears,
+  };
+  const examYears =
+    examYearsBySubject[subjectId] ||
+    (courseId === "course1" ? courseOneExamYears : courseTwoExamYears);
   const examYear = examYears.find((item) => String(item.year) === year);
   const paper = examYear?.papers.find((item) => item.id === paperId);
 
@@ -22,7 +45,13 @@ async function MockExamPaperContent({ params, searchParams }) {
     <div className="mx-auto max-w-[920px] px-4 pb-8 pt-5 sm:px-6 sm:pb-10 lg:px-8 lg:pt-7">
       <Link
         className="inline-flex min-h-9 items-center gap-2 rounded-lg text-xs font-medium text-[#536476] hover:text-[#355b90] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b91c9] sm:text-sm"
-        href={courseId === "course1" ? "/mock-exam?course=course1" : "/mock-exam"}
+        href={
+          subjectId !== "mathematics"
+            ? `/mock-exam?subject=${subjectId}`
+            : courseId === "course1"
+              ? "/mock-exam?course=course1"
+              : "/mock-exam"
+        }
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         Шалгалтын жагсаалт руу буцах
@@ -30,7 +59,8 @@ async function MockExamPaperContent({ params, searchParams }) {
 
       <header className="mt-7">
         <p className="m-0 text-[10px] font-semibold tracking-[0.17em] text-[#6d7887] sm:text-xs">
-          MOCK EXAM / MATHEMATICS {courseLabel.toUpperCase()}
+          MOCK EXAM / {subjectLabel}
+          {subjectId === "mathematics" ? ` ${courseLabel.toUpperCase()}` : ""}
         </p>
         <h1 className="mb-0 mt-3 text-2xl font-bold tracking-[-0.04em] text-[#171b2b] sm:text-3xl">
           {examYear.year} оны шалгалт

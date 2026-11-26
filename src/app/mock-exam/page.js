@@ -3,10 +3,15 @@ import OnboardingSidebar from "../onboarding/onboarding-sidebar";
 import MockExamIndex from "./mock-exam-index";
 
 async function MockExamPageContent({ searchParams }) {
-  const { course } = await searchParams;
+  const { course, subject } = await searchParams;
   const initialCourseId = course === "course1" ? "course1" : "course2";
+  const initialSubjectId = ["physics", "chemistry", "biology"].includes(subject)
+    ? subject
+    : "mathematics";
 
-  return <MockExamIndex initialCourseId={initialCourseId} />;
+  return (
+    <MockExamIndex initialCourseId={initialCourseId} initialSubjectId={initialSubjectId} />
+  );
 }
 
 function MockExamPageFallback() {
