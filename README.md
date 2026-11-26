@@ -16,6 +16,21 @@ Onboarding answers are saved for the signed-in Clerk user in Supabase.
 
 Keep `SUPABASE_SECRET_KEY` private and do not prefix it with `NEXT_PUBLIC_`. The API checks the signed-in Clerk user and uses that user ID as the row key; browser clients do not get direct table access.
 
+## Mock exam database
+
+Mock exam data and signed-in users' attempts are managed by Drizzle ORM through Supabase PostgreSQL.
+
+1. Run `supabase/migrations/20261126213000_create_mock_exam_tables.sql` in the Supabase SQL Editor.
+2. Add the PostgreSQL connection string from the Supabase project's **Connect → Shared Pooler** panel to `.env.local`:
+
+   ```env
+   DATABASE_URL=postgresql://...
+   ```
+
+3. Keep `DATABASE_URL` server-only. Do not add a `NEXT_PUBLIC_` prefix. Restart the Next.js server.
+
+The exam grading API requires a signed-in Clerk user and saves the attempt, selected answers, and result in one database transaction. The initial 2011 science paper index and answer key are synchronized on the first submitted attempt.
+
 ## Getting Started
 
 First, run the development server:

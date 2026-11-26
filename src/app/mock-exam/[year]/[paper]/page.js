@@ -10,6 +10,8 @@ import {
   chemistryExamYears,
   physicsExamYears,
 } from "../../mock-exam-year-data";
+import MockExamPaperExperience from "../../mock-exam-paper-experience";
+import { science2011FirstSessionAnswerKeys } from "../../science-2011-answer-key";
 
 async function MockExamPaperContent({ params, searchParams }) {
   const { year, paper: paperId } = await params;
@@ -40,6 +42,30 @@ async function MockExamPaperContent({ params, searchParams }) {
   if (!examYear || !paper) {
     notFound();
   }
+
+  if (paper.sourceUrl && subjectId !== "mathematics") {
+    const scienceSubjectLabels = {
+      physics: "Физик",
+      chemistry: "Хими",
+      biology: "Биологи",
+    };
+
+    return (
+      <MockExamPaperExperience
+        key={`${subjectId}-${examYear.year}-${paper.id}`}
+        paper={paper}
+        questionCount={paper.questionCount ?? examYear.questionCount}
+        subjectId={subjectId}
+        subjectLabel={scienceSubjectLabels[subjectId]}
+        year={examYear.year}
+      />
+    );
+  }
+
+  const answerKey =
+    examYear.year === 2011 && paper.id === "session-1"
+      ? science2011FirstSessionAnswerKeys[subjectId]
+      : null;
 
   return (
     <div className="mx-auto max-w-[920px] px-4 pb-8 pt-5 sm:px-6 sm:pb-10 lg:px-8 lg:pt-7">
@@ -78,13 +104,50 @@ async function MockExamPaperContent({ params, searchParams }) {
               Шалгалтын материал
             </h2>
             <p className="mb-0 mt-1 text-xs leading-5 text-[#6d7887] sm:text-sm">
-              {examYear.questionCount} асуулт
+              {paper.questionCount ?? examYear.questionCount} асуулт
             </p>
           </div>
         </div>
-        <p className="mb-0 mt-6 rounded-xl bg-[#f7f7f5] px-4 py-3 text-xs leading-5 text-[#6d7887] sm:text-sm">
-          Энэ шалгалтын асуултууд хараахан системд нэмэгдээгүй байна.
-        </p>
+        {paper.sourceUrl ? (
+          <div className="mt-6 rounded-xl bg-[#f7f7f5] px-4 py-4">
+            <p className="mb-3 mt-0 text-xs leading-5 text-[#6d7887] sm:text-sm">
+              2011 оны 1-р ээлжийн эх асуултыг JASSO-ийн PDF-ээс үзнэ үү.
+            </p>
+            <a
+              className="inline-flex min-h-9 items-center rounded-full bg-[#e9eef6] px-4 text-xs font-semibold text-[#355b90] transition-colors hover:bg-[#dfe8f4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b91c9] sm:text-sm"
+              href={paper.sourceUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              JASSO-ийн PDF нээх ↗
+            </a>
+          </div>
+        ) : (
+          <p className="mb-0 mt-6 rounded-xl bg-[#f7f7f5] px-4 py-3 text-xs leading-5 text-[#6d7887] sm:text-sm">
+            Энэ шалгалтын асуултууд хараахан системд нэмэгдээгүй байна.
+          </p>
+        )}
+        {answerKey && (
+          <details className="mt-5 rounded-xl border border-[#e9e6de] px-4 py-3">
+            <summary className="cursor-pointer text-xs font-semibold text-[#355b90] sm:text-sm">
+              Хариултын түлхүүр харах
+            </summary>
+            <ol
+              aria-label="Хариултын түлхүүр"
+              className="mb-0 mt-3 grid list-none grid-cols-3 gap-2 p-0 sm:grid-cols-5"
+            >
+              {answerKey.map((answer, index) => (
+                <li
+                  className="flex items-center justify-between rounded-lg bg-[#f7f7f5] px-3 py-2 text-xs text-[#606a78]"
+                  key={`${index + 1}-${answer}`}
+                >
+                  <span>{index + 1}</span>
+                  <strong className="text-[#171b2b]">{answer}</strong>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
       </section>
     </div>
   );

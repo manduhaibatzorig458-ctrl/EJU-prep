@@ -1,5 +1,15 @@
 const sessionTwo = { id: "session-2", label: "2-р ээлж · Бүтэн шалгалт" };
 const sessionOne = { id: "session-1", label: "1-р ээлж · Бүтэн шалгалт" };
+export const science2011PaperUrl =
+  "https://www.jasso.go.jp/en/ryugaku/eju/examinee/pastpaper_sample/__icsFiles/afieldfile/2021/03/23/2011_1question_science_e_1.pdf";
+
+function createScience2011SessionOne(questionCount) {
+  return {
+    ...sessionOne,
+    questionCount,
+    sourceUrl: science2011PaperUrl,
+  };
+}
 
 export const courseTwoExamYears = [
   { year: 2026, questionCount: 6, papers: [{ id: "june", label: "6-р сарын хувилбар" }] },
@@ -72,7 +82,7 @@ export const physicsExamYears = [
   { year: 2014, questionCount: 38, papers: [sessionTwo, sessionOne] },
   { year: 2013, questionCount: 38, papers: [sessionTwo, sessionOne] },
   { year: 2012, questionCount: 38, papers: [sessionTwo, sessionOne] },
-  { year: 2011, questionCount: 38, papers: [sessionTwo, sessionOne] },
+  { year: 2011, questionCount: 38, papers: [sessionTwo, createScience2011SessionOne(19)] },
   { year: 2010, questionCount: 38, papers: [sessionTwo, sessionOne] },
   { year: 2009, questionCount: 38, papers: [sessionTwo, sessionOne] },
   { year: 2008, questionCount: 38, papers: [sessionTwo, sessionOne] },
@@ -100,7 +110,7 @@ export const chemistryExamYears = [
   { year: 2014, questionCount: 40, papers: [sessionTwo, sessionOne] },
   { year: 2013, questionCount: 40, papers: [sessionTwo, sessionOne] },
   { year: 2012, questionCount: 40, papers: [sessionTwo, sessionOne] },
-  { year: 2011, questionCount: 40, papers: [sessionTwo, sessionOne] },
+  { year: 2011, questionCount: 40, papers: [sessionTwo, createScience2011SessionOne(20)] },
   { year: 2010, questionCount: 40, papers: [sessionTwo, sessionOne] },
   { year: 2009, questionCount: 40, papers: [sessionTwo, sessionOne] },
   { year: 2008, questionCount: 40, papers: [sessionTwo, sessionOne] },
@@ -127,7 +137,7 @@ export const biologyExamYears = [
   { year: 2014, questionCount: 33, papers: [sessionTwo, sessionOne] },
   { year: 2013, questionCount: 31, papers: [sessionTwo, sessionOne] },
   { year: 2012, questionCount: 30, papers: [sessionTwo, sessionOne] },
-  { year: 2011, questionCount: 31, papers: [sessionTwo, sessionOne] },
+  { year: 2011, questionCount: 31, papers: [sessionTwo, createScience2011SessionOne(18)] },
   { year: 2010, questionCount: 31, papers: [sessionTwo, sessionOne] },
   { year: 2009, questionCount: 32, papers: [sessionTwo, sessionOne] },
   { year: 2008, questionCount: 28, papers: [sessionTwo, sessionOne] },
