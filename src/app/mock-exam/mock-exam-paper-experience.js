@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, FileText } from "lucide-react";
-import MockExamAnswerSheet from "./mock-exam-answer-sheet";
 import MockExamPaperToolbar from "./mock-exam-paper-toolbar";
+import MockExamQuestionList from "./mock-exam-question-list";
 
 export default function MockExamPaperExperience({
   subjectId,
@@ -12,6 +12,7 @@ export default function MockExamPaperExperience({
   year,
   paper,
   questionCount,
+  questionPdfPages,
 }) {
   const [mode, setMode] = useState("practice");
   const [answers, setAnswers] = useState(() => Array(questionCount).fill(null));
@@ -116,13 +117,15 @@ export default function MockExamPaperExperience({
             <BookOpen className="size-4" aria-hidden="true" />
             Бүх шалгалт
           </Link>
-          <Link
+          <a
             className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#e1e4e7] bg-white px-4 text-sm font-semibold text-[#3f4b59] hover:bg-[#f7f7f5]"
-            href="#source-document"
+            href={paper.sourceUrl}
+            rel="noreferrer"
+            target="_blank"
           >
             <FileText className="size-4" aria-hidden="true" />
-            Эх PDF рүү очих
-          </Link>
+            Эх PDF нээх ↗
+          </a>
         </div>
       </header>
 
@@ -138,40 +141,23 @@ export default function MockExamPaperExperience({
       />
 
       <p className="mb-0 mt-5 text-xs leading-5 text-[#6d7887] sm:text-sm">
-        Шалгалтын эх материал © JASSO. Сургалтын зориулалтаар ашиглана. PDF доторх хуудсуудыг гүйлгэж үзнэ үү.
+        Шалгалтын эх материал © JASSO. Асуулт бүрийн эх PDF хуудсыг үзээд доорх сонголтоос хариулна уу.
       </p>
 
-      <section className="mt-5 overflow-hidden rounded-2xl border border-[#e9e6de] bg-white" id="source-document">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e9e6de] px-4 py-3 sm:px-5">
-          <h2 className="m-0 text-sm font-semibold text-[#273243]">Эх шалгалтын PDF</h2>
-          <a
-            className="text-xs font-semibold text-[#426ca7] underline-offset-2 hover:underline sm:text-sm"
-            href={paper.sourceUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Шинэ цонхонд нээх ↗
-          </a>
-        </div>
-        <iframe
-          className="h-[72svh] min-h-[520px] w-full bg-[#f7f7f5]"
-          loading="lazy"
-          src={paper.sourceUrl}
-          title={`${year} оны ${subjectLabel} шалгалтын албан ёсны PDF`}
-        />
-      </section>
-
-      {mode === "practice" && (
-        <MockExamAnswerSheet
-          answers={answers}
-          errorMessage={errorMessage}
-          isSubmitting={isSubmitting}
-          onReset={resetExam}
-          onSelectAnswer={selectAnswer}
-          onSubmit={submitAnswers}
-          result={result}
-        />
-      )}
+      <MockExamQuestionList
+        answers={answers}
+        errorMessage={errorMessage}
+        isSubmitting={isSubmitting}
+        mode={mode}
+        onReset={resetExam}
+        onSelectAnswer={selectAnswer}
+        onSubmit={submitAnswers}
+        questionPdfPages={questionPdfPages}
+        result={result}
+        sourceUrl={paper.sourceUrl}
+        subjectLabel={subjectLabel}
+        year={year}
+      />
     </div>
   );
 }

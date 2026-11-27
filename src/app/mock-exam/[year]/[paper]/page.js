@@ -9,6 +9,7 @@ import {
   courseTwoExamYears,
   chemistryExamYears,
   physicsExamYears,
+  science2011QuestionPdfPages,
 } from "../../mock-exam-year-data";
 import MockExamPaperExperience from "../../mock-exam-paper-experience";
 import { science2011FirstSessionAnswerKeys } from "../../science-2011-answer-key";
@@ -55,6 +56,7 @@ async function MockExamPaperContent({ params, searchParams }) {
         key={`${subjectId}-${examYear.year}-${paper.id}`}
         paper={paper}
         questionCount={paper.questionCount ?? examYear.questionCount}
+        questionPdfPages={science2011QuestionPdfPages[subjectId]}
         subjectId={subjectId}
         subjectLabel={scienceSubjectLabels[subjectId]}
         year={examYear.year}

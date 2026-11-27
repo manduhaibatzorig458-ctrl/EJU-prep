@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import EjuBrand from "../../components/layout/eju-brand";
@@ -101,11 +101,48 @@ function SidebarContent() {
   );
 }
 
+function SidebarContentFallback() {
+  return (
+    <div className="px-4 pb-6 pt-5" aria-hidden="true">
+      <div className="mb-8 border-b border-[#e9e6de] px-2 pb-5">
+        <EjuBrand />
+      </div>
+      <nav aria-label="Үндсэн цэс" className="space-y-5">
+        {navigationGroups.map((items, groupIndex) => (
+          <section
+            className={groupIndex > 0 ? "border-t border-[#e9e6de] pt-4" : ""}
+            key={items[0].label}
+          >
+            <ul className="m-0 list-none space-y-1 p-0">
+              {items.map(({ label, Icon }) => (
+                <li key={label}>
+                  <div className="flex min-h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] text-[#4f5b69]">
+                    <Icon className="size-4 shrink-0" aria-hidden="true" />
+                    <span>{label}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+function SuspendedSidebarContent() {
+  return (
+    <Suspense fallback={<SidebarContentFallback />}>
+      <SidebarContent />
+    </Suspense>
+  );
+}
+
 export default function OnboardingSidebar() {
   return (
     <>
       <aside className="sticky top-0 hidden h-svh overflow-y-auto border-r border-[#e9e6de] bg-[var(--japanese-paper)] lg:block">
-        <SidebarContent />
+        <SuspendedSidebarContent />
       </aside>
 
       <details className="border-b border-[#e9e6de] bg-[var(--japanese-paper)] lg:hidden">
@@ -117,7 +154,7 @@ export default function OnboardingSidebar() {
           Цэс
         </summary>
         <div className="max-h-[65svh] overflow-y-auto border-t border-[#e9e6de]">
-          <SidebarContent />
+          <SuspendedSidebarContent />
         </div>
       </details>
     </>

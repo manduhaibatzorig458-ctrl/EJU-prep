@@ -3,6 +3,16 @@ const sessionOne = { id: "session-1", label: "1-р ээлж · Бүтэн шал
 export const science2011PaperUrl =
   "https://www.jasso.go.jp/en/ryugaku/eju/examinee/pastpaper_sample/__icsFiles/afieldfile/2021/03/23/2011_1question_science_e_1.pdf";
 
+export const science2011QuestionPdfPages = {
+  physics: Array.from({ length: 19 }, (_, index) => index + 4),
+  chemistry: [
+    23, 24, 24, 25, 25, 26, 27, 28, 29, 29, 29, 30, 30, 31, 32, 33, 33, 33, 34, 35,
+  ],
+  biology: [
+    37, 38, 39, 40, 40, 41, 42, 43, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
+  ],
+};
+
 function createScience2011SessionOne(questionCount) {
   return {
     ...sessionOne,
